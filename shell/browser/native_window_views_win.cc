@@ -314,6 +314,12 @@ bool NativeWindowViews::PreHandleMSG(UINT message,
         NotifyWindowMoved();
         is_moving_ = false;
       }
+      if (!pending_bounds_changes_.empty()) {
+        auto next_bounds_change = pending_bounds_changes_.front();
+        pending_bounds_changes_.pop();
+        SetBounds(next_bounds_change, false /* animate */);
+      }
+
       return false;
     }
     case WM_MOVING: {
